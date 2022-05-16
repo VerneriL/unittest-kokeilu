@@ -1,0 +1,3 @@
+#!/bin/sh
+# python -m unittest "$@"
+pytest --cov --cov-report=term-missing "$@"

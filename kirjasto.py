@@ -1,0 +1,65 @@
+class NumerointiVirhe(ValueError):
+    pass
+
+
+class Kirja:
+    def __init__(self, nimi, kirjoittaja):
+        self.nimi = nimi
+        self.kirjoittaja = kirjoittaja
+        self.luvut = []
+
+    def lisaa_luku(self, otsikko, sivuja, numero=None):
+        if numero is None:
+            numero = len(self.luvut) + 1
+        if not self.onko_luvun_numero_vapaana(numero):
+            raise NumerointiVirhe(f"Numero varattu: {numero}")
+        self.luvut.append(
+            Luku(
+                numero=numero,
+                otsikko=otsikko,
+                sivuja=sivuja,
+            )
+        )
+
+    def onko_luvun_numero_vapaana(self, numero):
+        kaytetyt_lukujen_numerot = set(luku.numero for luku in self.luvut)
+        return numero not in kaytetyt_lukujen_numerot
+
+    def lasku_sivujen_lkm(self):
+        return sum(luku.sivuja for luku in self.luvut)
+
+
+class Luku:
+    def __init__(self, numero, otsikko, sivuja):
+        self.numero = numero
+        self.otsikko = otsikko
+        self.sivuja = sivuja
+
+
+hassu_kirja = Kirja(nimi="Hassukirja", kirjoittaja="Hassu Klovni")
+hassu_kirja.lisaa_luku("Johdanto", sivuja=123)
+hassu_kirja.lisaa_luku("Johtopäätökset", sivuja=222)
+
+# tekisi saman kuin alla:
+#  hopo_kirja = Kirja("Höpökirja", "Hiiri Höpönen")
+hopo_kirja = Kirja(nimi="Höpökirja", kirjoittaja="Hiiri Höpönen")
+hopo_kirja.lisaa_luku("Johdanto", sivuja=3)
+hopo_kirja.lisaa_luku("Hei vaan", sivuja=12)
+
+
+hopo_kirja_dictionaryna = {
+    "nimi": "Höpökirja",
+    "kirjoittaja": "Hiiri Höpönen",
+    "luvut": [
+        {
+            "numero": 1,
+            "otsikko": "Johdanto",
+            "sivuja": 3,
+        },
+        {
+            "numero": 2,
+            "otsikko": "Hei vaan",
+            "suvuja": 12,
+        },
+    ]
+}
